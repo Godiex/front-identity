@@ -1,0 +1,64 @@
+<div
+  class="container-fluid mt-md-5 d-flex align-items-center h-100 justify-content-center"
+>
+  <div class="row">
+    <div class="col-md-8 d-none d-md-block">
+      <div class="d-flex align-items-center justify-content-center h-100">
+        <img
+          src="./../../../../assets/icon_login.svg"
+          alt="Imagen 1"
+          class="img-fluid"
+        />
+      </div>
+    </div>
+    <div class="col-12 col-md-4">
+      <form
+        class="row-5 d-flex flex-column align-items-center justify-content-center h-100"
+      >
+        <div class="d-flex align-items-center justify-content-center h-100 p-3">
+          <img
+            src="./../../../../assets/icon_login_usuario.png"
+            alt="Imagen 1"
+            class="img-fluid"
+          />
+        </div>
+
+        <div class="col-12 m-2" style="float: left">
+          <ftx-select
+            [formGroup]="loginForm"
+            [controlName]="'interCompanies'"
+            label="Tipo"
+            [elements]="interCompanies"
+            [viewError]="true"
+          />
+        </div>
+
+        <div class="col-12 m-2">
+          <ftx-input
+            [formGroup]="loginForm"
+            controlName="email"
+            [viewLabel]="false"
+            [placeholder]="'CORREO'"
+          />
+        </div>
+
+        <div class="col-12 m-2">
+          <app-ftx-input-password
+            [formGroup]="loginForm"
+            controlName="passwords"
+            [viewLabel]="false"
+            [placeholder]="'CONTRASEÑA'"
+          />
+        </div>
+
+        <a (click)="showModalEmail()" class="mb-3">Olvidé mi contraseña</a>
+
+        <ftx-button
+          [content]="'Iniciar sesión'"
+          (eventClick)="login()"
+          [disabled]="!loginForm.valid"
+        />
+      </form>
+    </div>
+  </div>
+</div>

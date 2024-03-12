@@ -1,0 +1,43 @@
+<ftx-dialog [componet]="true">
+  <div content>
+    <div class="modal-header">
+      <div class="row col-12">
+        <div class="col-12">
+          <h4
+            class="modal-title"
+            id="modal-basic-title"
+            style="font-weight: bold"
+          >
+            Recuperar contraseña
+          </h4>
+          <span class="modal-title font-weight-bold" id="modal-basic-title">
+            Se le enviará un correo de verificación para proceder con la
+            recuperación de su contraseña.
+          </span>
+        </div>
+      </div>
+    </div>
+    <hr class="hr hr-blurry" />
+    <div class="modal-body">
+      <div class="row d-flex align-items-center justify-content-center">
+        <div class="col-10">
+          <ftx-input
+            [formGroup]="emailForm"
+            [controlName]="'email'"
+            label="Correo:"
+            placeholder="Correo"
+          />
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-12 text-center" style="height: 70px">
+          <ftx-button
+            [content]="'Enviar correo'"
+            (eventClick)="sendEmail()"
+            [disabled]="!emailForm.valid"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</ftx-dialog>

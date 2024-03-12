@@ -1,0 +1,39 @@
+<div class="container-fluid p-0">
+  <mat-toolbar class="app-toolbar">
+    <div class="headerTool">
+      <div class="col-12 shadow p-2 mb-1 bg-white rounded">
+        <div class="row">
+          <div class="col-9">
+            <div>
+              <a [routerLink]="['/']">
+                <div class="col-4">
+                  <img
+                    src="../../assets/LogoFinotex.png"
+                    alt="icono"
+                    class="icon_logo"
+                  />
+                </div>
+                <div class="col-4">
+                  <img
+                    class="img_ico"
+                    src="../../assets/header_qr_custom_link.svg"
+                    alt="header"
+                  />
+                </div>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </mat-toolbar>
+  <mat-sidenav-container class="app-container" autosize>
+    <div class="app-sidenav-content">
+      <div class="row">
+        <div class="col-12">
+          <router-outlet> </router-outlet>
+        </div>
+      </div>
+    </div>
+  </mat-sidenav-container>
+</div>

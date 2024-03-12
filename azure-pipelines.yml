@@ -1,0 +1,74 @@
+trigger:
+  - main
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+stages:
+  - stage: Build
+
+    jobs:
+      - job: build
+        displayName: Build app
+
+        steps:
+
+          - task: NodeTool@0
+            inputs:
+              versionSpec: '20.x'
+            displayName: Build app
+
+          - task: Npm@1
+            inputs:
+              command: 'install'
+            displayName: Run npm install
+
+          - task: Npm@1
+            inputs:
+              command: custom
+              customCommand: 'run build'
+            displayName: build assets
+
+          - task: CopyFiles@2
+            inputs:
+              SourceFolder: './dist/admin/browser'
+              Contents: '**'
+              TargetFolder: '$(Build.ArtifactStagingDirectory)/admin'
+            displayName: Package front end
+
+          - task: PublishPipelineArtifact@1
+            inputs:
+              targetPath: '$(Build.ArtifactStagingDirectory)'
+              artifact: 'drop'
+              publishLocation: 'pipeline'
+            displayName: publish artifacts
+
+  - stage: deploy_staging
+    displayName: deploy to staging
+    jobs:
+      - job: deploy
+        displayName: deploy the artifact
+        steps:
+          - checkout: none
+          - download: none
+          - task: DownloadPipelineArtifact@2
+            inputs:
+              artifact: drop
+            displayName: Download artifacts
+
+          - script: |
+              echo "Contents of Pipeline.Workspace:"
+              ls -R $(Pipeline.Workspace)
+
+          - script: |
+              echo "Contents of  ArtifactStagingDirectory"
+              ls -R $(Build.ArtifactStagingDirectory)
+
+          - task: AzureStaticWebApp@0
+            displayName: publish to static web app
+            inputs:
+              app_location: admin
+              skip_app_build: true
+              config_file_location: admin/assets
+              azure_static_web_apps_api_token: $(QR-CUSTOMLINK-FRONT-ADMIN-DEPLOY-TOKEN)
+              workingDirectory: $(Pipeline.Workspace)
