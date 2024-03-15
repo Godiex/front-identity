@@ -14,18 +14,15 @@ import { Observable, concatMap, map } from "rxjs";
 export class UserRepository extends UserService {
   baseUrl = `${environment.identityAppUrl}${environment.apiSuffix}${resources.user}`;
 
-  override updatePassword(
-    userId: string,
-    password: UpdatePassword
-  ): Observable<void> {
+  override updatePassword(password: UpdatePassword): Observable<void> {
     return this.httpService.doPatch<UpdatePassword, void>(
-      `${this.baseUrl}/${userId}`,
+      `${this.baseUrl}/update-password`,
       password
     );
   }
-  override AcceptTermsAndConditions(userId: string): Observable<void> {
+  override AcceptTermsAndConditions(): Observable<void> {
     return this.httpService.doPatch<null, void>(
-      `${this.baseUrl}/${userId}/accepttermsandconditions`,
+      `${this.baseUrl}/accepttermsandconditions`,
       null
     );
   }

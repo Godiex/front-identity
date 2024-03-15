@@ -37,6 +37,8 @@ export class FtxErrorMessage {
       return `El campo ${this.name} debe  contener como máximo ${maxLength} caracteres`;
     } else if (validatorKey === "pattern") {
       return "El valor del campo " + this.name + " ingresado no es válido";
+    } else if (validatorKey === "confirmedValidator") {
+      return "Las contraseñas no coinciden";
     }
     return "Campo " + this.name + "inválido";
   }

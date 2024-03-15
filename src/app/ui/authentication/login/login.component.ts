@@ -8,7 +8,7 @@ import { Signature } from "@core/models/auth/signatures.model";
 import { Router } from "@angular/router";
 import { HttpErrorResponse } from "@angular/common/http";
 import { NotificationService } from "../../shared/services/notification.service";
-import {SelectFormat} from "../../shared/components/ftx-select/models/selectFormat.model";
+import { SelectFormat } from "../../shared/components/ftx-select/models/selectFormat.model";
 
 @Component({
   selector: "app-login",
@@ -16,7 +16,10 @@ import {SelectFormat} from "../../shared/components/ftx-select/models/selectForm
   styleUrl: "./login.component.css",
 })
 export class LoginComponent implements OnInit {
-  public interCompanies: SelectFormat[] = [{name: 'Colombia', value: "COLOMBIA"}, {name: 'Mexico', value: "MEXICO"}];
+  public interCompanies: SelectFormat[] = [
+    { name: "Colombia", value: "COLOMBIA" },
+    { name: "Mexico", value: "MEXICO" },
+  ];
   constructor(
     private formBuilder: FormBuilder,
     private dialog: MatDialog,
@@ -26,7 +29,10 @@ export class LoginComponent implements OnInit {
   ) {}
   public loginForm!: FormGroup;
   ngOnInit(): void {
-    this.interCompanies = [{name: 'Colombia', value: "COLOMBIA"}, {name: 'Mexico', value: "MEXICO"}];
+    this.interCompanies = [
+      { name: "Colombia", value: "COLOMBIA" },
+      { name: "Mexico", value: "MEXICO" },
+    ];
     this.createForm();
   }
   private createForm(): void {
@@ -43,7 +49,10 @@ export class LoginComponent implements OnInit {
     });
   }
   public login(): void {
-    localStorage.setItem('interCompany', this.loginForm.get("interCompanies")?.value);
+    localStorage.setItem(
+      "interCompany",
+      this.loginForm.get("interCompanies")?.value
+    );
     const credentials = new Signature(
       this.loginForm.get("email")?.value,
       this.loginForm.get("passwords")?.value
@@ -55,6 +64,10 @@ export class LoginComponent implements OnInit {
       error: (error: HttpErrorResponse) => {
         if (error.error.code === 401) {
           this.notificationService.showError("Credenciales incorrectas");
+        } else {
+          this.notificationService.showError(
+            "En estos momentos no podemos procesar su solicitud"
+          );
         }
       },
     });

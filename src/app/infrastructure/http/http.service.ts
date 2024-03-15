@@ -2,17 +2,22 @@ import { HttpClient, HttpHeaders, HttpParams } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { map, Observable } from "rxjs";
 import { Options } from "./http-options.model";
+import { SessionRepository } from "@infrastructure/repositories/session.repository";
 
 @Injectable()
 export class HttpService {
-  constructor(protected http: HttpClient) {}
+  constructor(
+    protected http: HttpClient,
+    protected sessionRepository: SessionRepository
+  ) {}
 
   public createDefaultOptions(): Options {
     return {
       headers: new HttpHeaders({
         "Content-Type": "application/json",
         "Accept-Language": "en",
-        "tenant": localStorage.getItem('interCompany') || "COLOMBIA",
+        Authorization: `Bearer ${this.sessionRepository.getToken()?.token}`,
+        tenant: localStorage.getItem("interCompany") || "COLOMBIA",
       }),
     };
   }

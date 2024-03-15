@@ -13,9 +13,6 @@ export abstract class UserService {
   ): Observable<any>;
 
   abstract putCreateUser(userId: string, user: CreateUser): Observable<void>;
-  abstract updatePassword(
-    userId: string,
-    password: UpdatePassword
-  ): Observable<void>;
-  abstract AcceptTermsAndConditions(userId: string): Observable<void>;
+  abstract updatePassword(password: UpdatePassword): Observable<void>;
+  abstract AcceptTermsAndConditions(): Observable<void>;
 }

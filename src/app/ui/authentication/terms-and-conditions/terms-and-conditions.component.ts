@@ -23,25 +23,23 @@ export class TermsAndConditionsComponent {
     if (this.acceptedTerms) {
       this.token = this.sessionService.getToken();
       if (this.token) {
-        this.userService
-          .AcceptTermsAndConditions(this.token?.userId)
-          .subscribe({
-            next: () => {
-              if (this.token?.firstTimeLogin) {
-                this.router.navigate([MODULES.AUTHENTICATION.UPDATEPASSWORD]);
+        this.userService.AcceptTermsAndConditions().subscribe({
+          next: () => {
+            if (this.token?.firstTimeLogin) {
+              this.router.navigate([MODULES.AUTHENTICATION.UPDATEPASSWORD]);
+            } else {
+              const sessionString = this.sessionService.getSessionString(
+                this.token
+              );
+              if (this.token?.rol === "SuperAdmin") {
+                window.location.href = `${environment.frontAdminUrl}${environment.negotiation}${sessionString}`;
               } else {
-                const sessionString = this.sessionService.getSessionString(
-                  this.token
-                );
-                if (this.token?.rol === "SuperAdmin") {
-                  window.location.href = `${environment.frontAdminUrl}${environment.negotiation}${sessionString}`;
-                } else {
-                  window.location.href = `${environment.frontCustomerUrl}${environment.negotiation}${sessionString}`;
-                }
+                window.location.href = `${environment.frontCustomerUrl}${environment.negotiation}${sessionString}`;
               }
-            },
-            error: () => {},
-          });
+            }
+          },
+          error: () => {},
+        });
       }
     }
   }
