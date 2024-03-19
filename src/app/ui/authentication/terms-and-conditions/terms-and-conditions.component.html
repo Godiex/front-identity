@@ -96,6 +96,7 @@
     </div>
     <div class="col-12 mt-3">
       <div class="d-flex align-items-center justify-content-center">
+        @if(!isLoading){
         <ftx-button
           [content]="'Continuar'"
           [disabled]="!acceptedTerms"
@@ -108,6 +109,9 @@
           (eventClick)="onReject()"
           [icon]="'highlight_off'"
         ></ftx-button>
+        }@else{
+        <app-ftx-spinner />
+        }
       </div>
     </div>
   </div>

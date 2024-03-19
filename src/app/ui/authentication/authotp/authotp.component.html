@@ -28,11 +28,17 @@
         </div>
         <a class="m-3">¿No has recibido el código?</a>
 
+        @if(!isLoading){
         <ftx-button
           (eventClick)="verifyOtp()"
           [content]="'Continuar'"
+          [icon]="'arrow_forward'"
+          [positionIcon]="'right'"
           [disabled]="!otpValidToSend"
         />
+        }@else{
+        <app-ftx-spinner />
+        }
       </div>
     </div>
   </div>

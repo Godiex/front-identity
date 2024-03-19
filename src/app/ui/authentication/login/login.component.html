@@ -53,11 +53,17 @@
 
         <a (click)="showModalEmail()" class="mb-3">Olvidé mi contraseña</a>
 
+        @if(!isLoading){
         <ftx-button
           [content]="'Iniciar sesión'"
+          [icon]="'arrow_forward'"
+          [positionIcon]="'right'"
           (eventClick)="login()"
           [disabled]="!loginForm.valid"
         />
+        }@else{
+        <app-ftx-spinner />
+        }
       </form>
     </div>
   </div>

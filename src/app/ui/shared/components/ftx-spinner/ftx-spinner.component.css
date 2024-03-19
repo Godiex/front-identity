@@ -1,0 +1,64 @@
+.loader {
+  width: 36px; /* Reduce el tamaño del spinner según sea necesario */
+  height: 36px; /* Reduce el tamaño del spinner según sea necesario */
+  border-radius: 50%;
+  display: inline-block;
+  position: relative;
+  border: 2px solid; /* Reduzca el grosor del borde del spinner */
+  border-color: #FF3D00 #FF3D00 transparent;
+  box-sizing: border-box;
+  animation: rotation 1s linear infinite;
+}
+
+.loader::after {
+  content: '';
+  box-sizing: border-box;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  border: 2px solid;
+  border-color: transparent #393e45 #393e45;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  animation: rotationBack 0.5s linear infinite;
+  animation: fadeInOut 1s linear infinite;
+  transform-origin: center center;
+}
+
+.icon_logo {
+  max-width: 80px;
+  animation: fadeInOut 1s linear infinite;
+}
+
+@keyframes fadeInOut {
+  0% {
+    opacity: 0.4; /* Empieza con una opacidad reducida */
+  }
+  50% {
+    opacity: 1; /* Aumenta la opacidad a la mitad de la animación */
+  }
+  100% {
+    opacity: 0.3; /* Vuelve a reducir la opacidad al final de la animación */
+  }
+}
+@keyframes rotation {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes rotationBack {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(-360deg);
+  }
+}

@@ -13,7 +13,8 @@ import { NotificationService } from "../../shared/services/notification.service"
 import { MODULES } from "../../routes.constants";
 import { SessionService } from "@core/services/session-service.interface";
 import { Token } from "@core/models/auth/signatures.model";
-import { environment, resources } from "@env/environment";
+import { environment } from "@env/environment";
+import { UserType } from "@core/enums/userType.enum";
 
 @Component({
   selector: "app-updatepassword",
@@ -22,6 +23,8 @@ import { environment, resources } from "@env/environment";
 })
 export class UpdatepasswordComponent implements OnInit {
   token!: Token | null;
+  public isLoading = false;
+
   constructor(
     private formBuilder: FormBuilder,
     private userService: UserService,
@@ -73,30 +76,47 @@ export class UpdatepasswordComponent implements OnInit {
 
   public update(): void {
     this.token = this.sessionService.getToken();
+    if (!this.token) {
+      this.router.navigate([MODULES.AUTHENTICATION.LOGIN]);
+      return;
+    }
+    this.isLoading = true;
+
     var password = this.updatePasswordForm.get("newpassword")?.value;
     var confirmnewpassword =
       this.updatePasswordForm.get("confirmnewpassword")?.value;
-    if (password && this.token) {
-      this.userService
-        .updatePassword(new UpdatePassword(password, confirmnewpassword))
-        .subscribe({
-          next: () => {
-            this.notificationService.showSuccess(
-              "Contraseña actualizada con éxito"
-            );
 
-            const sessionString = this.sessionService.getSessionString(
-              this.token
-            );
-            if (this.token?.rol === "SuperAdmin") {
-              window.location.href = `${environment.frontAdminUrl}${environment.negotiation}${sessionString}`;
-            } else {
-              window.location.href = `${environment.frontCustomerUrl}${environment.negotiation}${sessionString}`;
-            }
-          },
-          error: () => {},
-        });
+    if (!password || !confirmnewpassword) {
+      return;
     }
+
+    this.userService
+      .updatePassword(new UpdatePassword(password, confirmnewpassword))
+      .subscribe({
+        next: () => {
+          this.isLoading = false;
+
+          this.notificationService.showSuccess(
+            "Contraseña actualizada con éxito"
+          );
+
+          this.redirectBasedOnUserRole(this.token);
+        },
+        error: () => {
+          this.isLoading = false;
+        },
+      });
+  }
+  private redirectBasedOnUserRole(token: Token | null): void {
+    if (!token) {
+      return;
+    }
+    const sessionString = this.sessionService.getSessionString(token);
+    const redirectUrl =
+      token.rol === UserType.SuperAdmin
+        ? `${environment.frontAdminUrl}${environment.negotiation}${sessionString}`
+        : `${environment.frontCustomerUrl}${environment.negotiation}${sessionString}`;
+    window.location.href = redirectUrl;
   }
 
   readonly MODULES = MODULES;
